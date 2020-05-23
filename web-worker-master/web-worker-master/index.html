@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Worker</title>
+    </head>
+    <body>
+    	<p>
+		Inserito il numero, 3 web worker eseguiti contemporaneamente controllano se è un numero primo,
+		calcolano la somma dei primi N numeri primi e mostrano il tempo di esecuzione.<br>
+		Sono presenti delle 'sleep' nei web worker che agiscono sul numero inserito per simulare attività che richiedono un consistente numero di secondi e rendere cisì più chiara la parallelizzazione delle attività.
+    	</p>
+
+	    <input type="text" id="num">
+
+		<p>Inserisci un numero e premi OK. Premi termina per terminare tutti i web worker.</p>
+		
+		<button onclick="myFunction()">OK</button>
+		<button onclick="stop()">TERMINA</button>
+
+		<script>
+			var x;
+
+			//creo i web workers
+			const worker_numprimo = new Worker('worker_numprimo.js');
+			const worker_sommaPrimiNNumeri = new Worker('worker_sommaPrimiNNumeri.js');
+			const worker_conta = new Worker('worker.js');
+
+			function myFunction() {
+			
+				x = document.getElementById("num").value; //acquisisco il valore inserito dall'utente
+				
+				
+				worker_numprimo.postMessage(x);//Passo al worker il numero inserito
+				worker_numprimo.onmessage = e => {
+				document.getElementById("risposta1").innerHTML = `worker_numprimo dice: "${e.data}"`;
+				}
+
+				
+				worker_sommaPrimiNNumeri.postMessage(x);//Passo al worker il numero inserito
+				worker_sommaPrimiNNumeri.onmessage = e => {
+					document.getElementById("risposta2").innerHTML = `worker_sommaPrimiNNumeri dice: "${e.data}"`;
+				}
+				
+				
+				worker_conta.postMessage(0);//Passo al worker 0 che è il numero di secondi da cui deve partire
+				worker_conta.onmessage = e  => {
+					document.getElementById("tempo").innerHTML = `Tempo esecuzione: "${e.data}" sec`;
+					worker_conta.postMessage(e.data);
+				}
+			}
+
+			function stop() {
+				//Termino tutti i worker
+				worker_numprimo.terminate();
+				worker_conta.terminate();
+				worker_sommaPrimiNNumeri.terminate();
+			}
+
+		</script>
+		<br><br><br>
+
+		<!--Div dove è mostrato l'output -->
+		<div id="tempo"></div><br>
+		<div id="risposta2"></div><br>
+		<div id="risposta1"></div>
+
+    </body>
+</html>

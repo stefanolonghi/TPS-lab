@@ -1,0 +1,49 @@
+<HTML><HEAD>
+<SCRIPT>
+// funzione attivata ad ogni pressione di un tasto sulla casella di testo
+function mostra(str){
+  if (str.length == 0){  // se stringa letta vuota viene inviata risposta blank
+    document.getElementById("risposta").innerHTML = "";
+    return;
+  }
+  // creazione oggetto XMLHttepRequest per vari tipi di Browser
+  if (window.XMLHttpRequest){  // browser IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else{                        // browser IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  // dopo una richiesta serve una funzione x ricevere i dati restituiti dal server
+  // onreadystatechange contiene la funzione che processerà la risposta del server 
+  xmlhttp.onreadystatechange = function(){
+    // readyState contiene lo stato della response del server. Ogni volta che 
+    // readyState cambia, la funzione onreadystatechange viene eseguita
+    // 0 La richiesta non è inizializzata
+    // 1 E' stabilita la connessione col server
+    // 2 La richiesta è ricevuta
+    // 3 La richiesta è processata
+    // 4 La richiesta è completa
+    // se status=200 OK   -  404 Not found
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+      //i dati trasmessi dal server sono ricavati da responseText (tipo stringa)
+      document.getElementById("risposta").innerHTML = xmlhttp.responseText;
+    }
+  }
+  // il metodo open() ha 3 parametri:
+  //  -il primo definisce quale metodo usare (GET/POST)
+  //  -il secondo è l'url dove risiede lo script server-side
+  //  -il terzo (booleano) specifica che la richiesta deve essere asincrona 
+  xmlhttp.open("GET", "php_con_ajax.php?stringa=" + str, true);
+  // send() trasmette effettivamente la richiesta al server. 
+  // senza parametri si indica POST - per GET mettere i parametri tra parentesi
+  xmlhttp.send();
+}
+</SCRIPT></HEAD>
+<BODY>
+<P><B>Scrivere nella casella le iniziali:</B></P>
+<FORM> 
+Nome: <INPUT TYPE="text" onkeyup="mostra(this.value)">
+</FORM>
+<P>Nominativi trovati: <DIV ID="risposta"></DIV></P>
+</BODY>
+</HTML>
