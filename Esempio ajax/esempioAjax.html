@@ -1,11 +1,9 @@
 <HTML><HEAD>
 <SCRIPT>
 // funzione attivata ad ogni pressione di un tasto sulla casella di testo
-function mostra(str){
-  if (str.length == 0){  // se stringa letta vuota viene inviata risposta blank
-    document.getElementById("risposta").innerHTML = "";
-    return;
-  }
+function mostra(){
+  var str = document.getElementById("testo").value;
+  
   // creazione oggetto XMLHttepRequest per vari tipi di Browser
   if (window.XMLHttpRequest){  // browser IE7+, Firefox, Chrome, Opera, Safari
     xmlhttp = new XMLHttpRequest();
@@ -38,12 +36,15 @@ function mostra(str){
   // senza parametri si indica POST - per GET mettere i parametri tra parentesi
   xmlhttp.send();
 }
+
 </SCRIPT></HEAD>
 <BODY>
-<P><B>Scrivere nella casella le iniziali:</B></P>
+<P><B>Esempio di Ajax e PHP</B><BR><BR>
+Inserire un nome e cliccare [Aggiungi/mostra] per aggiungere il nome alla lista. Lo stesso pulsante mostra la lista se non viene inserito alcun nome. Se si desidera eliminare un nome dalla lista, scriverlo nella casella di testo e clicare [Elimina elemento]. La lista è salvata in un file di testo.</P>
 <FORM> 
-Nome: <INPUT TYPE="text" onkeyup="mostra(this.value)">
+Nome: <INPUT TYPE="text" ID="testo">
+<INPUT TYPE="button" onclick="mostra()" value="Aggiungi/Mostra">
 </FORM>
-<P>Nominativi trovati: <DIV ID="risposta"></DIV></P>
+<P>Ecco la lista: <DIV ID="risposta"></DIV></P>
 </BODY>
 </HTML>
