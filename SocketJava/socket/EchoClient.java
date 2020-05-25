@@ -29,6 +29,10 @@ System.out.println("Client Socket: "+ socket);
  String userInput;
  // ciclo di lettura da tastiera, invio al server e stampa risposta
  while (true){
+ System.out.println("Programma che controlla se l'elemento inserito in input fa parte della lista della spesa.\n");
+ System.out.println("La richiesta viene fatta al server che apre il file e si occupa della ricerca, restituendo al client la risposta.\n");
+ System.out.println("Digita END per terminare il programma.\n");
+ System.out.println("\nInserire:");
  userInput = stdIn.readLine();
  out.println(userInput);
  if (userInput.equals("END")) break;
