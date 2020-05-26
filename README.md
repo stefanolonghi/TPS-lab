@@ -9,4 +9,4 @@ se una determinata stringa è presente all'interno di un file di testo consultab
 invia la risposta al client.
 
 Nella cartella web worker è presente un semplice esempio di utilizzo dei web workers in cui viene evidenziata la parallelizzazione
-delle azioni sfruttando delle sleep.
+di script molto pesanti simulati con delle sleep.
